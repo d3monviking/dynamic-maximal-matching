@@ -10,7 +10,7 @@ Specifically, this implementation follows **Section 4** of the paper, which achi
 
 ---
 
-## Features
+## 🧩 Features
 
 - Supports **dynamic graph updates**
   - Edge insertion
@@ -26,7 +26,7 @@ Specifically, this implementation follows **Section 4** of the paper, which achi
 
 ---
 
-## Algorithm Overview
+## 🧠 Algorithm Overview
 
 The algorithm maintains:
 
@@ -43,7 +43,7 @@ The algorithm maintains:
 
 ---
 
-## Data Structures Used
+## ⛁ Data Structures Used
 
 | Concept | Implementation |
 |--------|----------------|
@@ -51,11 +51,9 @@ The algorithm maintains:
 | Owned edges \(O_u\) | `list[set]` |
 | Matching | `mate[]` array |
 | Levels | `level[]` array |
-| Visualization | NetworkX + Matplotlib |
-
 ---
 
-## Visualization
+## 📊 Visualization
 
 - Built using:
   - NetworkX
@@ -91,7 +89,7 @@ n q
 
 where n is the number of nodes in our graph and q denotes the number of updates. Replace operation with 'add' or 'delete' to add or delete an edge, respectively. 
 
-## Input Files
+## 🗂️ Input Files
 You can use the following input files instead of manually adding test cases.
 - [input_1.txt](input_1.txt)
 - [input_2.txt](input_2.txt)
