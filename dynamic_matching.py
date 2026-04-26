@@ -12,7 +12,7 @@ class DynamicMatching:
         self.owned = [set() for _ in range(n)]
         self.level = [0] * n
         self.mate = [-1] * n
-        self.threshold = int(math.sqrt(n)) + 1
+        self.threshold = int(math.sqrt(n))
         self.init_visualization()
 
     # VISUAL INIT
@@ -55,28 +55,33 @@ class DynamicMatching:
                 self.owned[u].add(v)
             else:
                 self.owned[v].add(u)
-            return
+        else:         
+            self.handle_insertion(u, v)
 
-        self.handle_insertion(u, v)
 
     def handle_insertion(self, u, v):
         self.owned[u].add(v)
         self.owned[v].add(u)
-
+    
         if self.mate[u] == -1 and self.mate[v] == -1:
             self.match(u, v)
-
+    
         if len(self.owned[v]) > len(self.owned[u]):
             u, v = v, u
-
-        if len(self.owned[u]) >= self.threshold:
+    
+        if len(self.owned[u]) == self.threshold:
+            old_u_mate = self.mate[u]
+    
             for w in list(self.owned[u]):
                 self.owned[w].discard(u)
-
+    
             x = self.random_settle(u)
-
+    
             if x != -1:
                 self.naive_settle(x)
+    
+            if old_u_mate != -1:
+                self.naive_settle(old_u_mate)
 
     # RANDOM SETTLE
     def random_settle(self, u):
@@ -84,9 +89,11 @@ class DynamicMatching:
             return -1
     
         y = random.choice(list(self.owned[u]))
-    
         # store old mate of y
         old_mate = self.mate[y]
+    
+        for w in list(self.owned[y]):
+            self.owned[w].discard(y)    
     
         # free u if needed
         if self.mate[u] != -1:
@@ -103,14 +110,14 @@ class DynamicMatching:
         self.level[u] = 1
         self.level[y] = 1
     
-        return old_mate   
+        return old_mate 
 
     # NAIVE SETTLE
     def naive_settle(self, u):
         if self.mate[u] != -1:
             return
     
-        for v in self.adj[u]:
+        for v in self.owned[u]:
             if self.mate[v] == -1:
                 self.match(u, v)
                 return
@@ -130,19 +137,16 @@ class DynamicMatching:
 
         self.unmatch(u, v)
 
-        if self.level[u] == 0:
+        if(max(self.level[u], self.level[v]) == 0):
             self.naive_settle(u)
-        else:
-            self.handle_deletion(u)
-
-        if self.level[v] == 0:
             self.naive_settle(v)
         else:
+            self.handle_deletion(u)
             self.handle_deletion(v)
 
     # HANDLE DELETION
     def handle_deletion(self, u):
-        for w in list(self.adj[u]):
+        for w in list(self.owned[u]):
             if self.level[w] == 1:
                 self.owned[w].add(u)
                 self.owned[u].discard(w)
@@ -153,7 +157,17 @@ class DynamicMatching:
                 self.naive_settle(x)
         else:
             self.level[u] = 0
+            for w in list(self.owned[u]):
+                if self.level[w] == 0:
+                    self.owned[w].add(u)
             self.naive_settle(u)
+            
+            for w in list(self.owned[u]):
+                if len(self.owned[u]) == self.threshold:
+                    x = self.random_settle(w)
+                    if x != -1:
+                        self.naive_settle(x)
+
 
     # VISUALIZATION
     def update_visualization(self):
@@ -162,7 +176,7 @@ class DynamicMatching:
     
         self.G.clear()
     
-        # ✅ add all nodes
+        # add all nodes
         self.G.add_nodes_from(range(self.n))
     
         # add edges
@@ -228,7 +242,6 @@ class DynamicMatching:
     
         plt.pause(4)
         
-    # DEBUG
     def print_state(self):
         print("\nCurrent Matching:")
         for u in range(self.n):
