@@ -201,7 +201,7 @@ class DynamicMatching:
             ax=self.ax1,
             with_labels=True,
             node_color=node_colors,
-            node_size=500
+            node_size=400
         )
     
         # matching edges
@@ -240,7 +240,7 @@ class DynamicMatching:
     
         self.ax2.set_title("Maximal Matching Only")
     
-        plt.pause(4)
+        plt.pause(1)
         
     def print_state(self):
         print("\nCurrent Matching:")
@@ -253,21 +253,14 @@ class DynamicMatching:
 
 # DRIVER
 def run():
-    import sys
-
-    data = sys.stdin.read().strip().split()
-    
-    n = int(data[0])
-    q = int(data[1])
-    
+    n, q = map(int, input().split())
     dm = DynamicMatching(n)
 
-    idx = 2
+    plt.ion()
+
     for _ in range(q):
-        op = data[idx]
-        u = int(data[idx + 1])
-        v = int(data[idx + 2])
-        idx += 3
+        op, u, v = input().split()
+        u, v = int(u), int(v)
 
         if op == "add":
             dm.insert_edge(u, v)
@@ -280,6 +273,8 @@ def run():
     print("Done.")
     plt.ioff()
     plt.show()
-
+    plt.pause(5)
+    plt.close()
+    
 if __name__ == "__main__":
     run()
