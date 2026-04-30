@@ -47,6 +47,7 @@ The algorithm maintains:
 
 | Concept | Implementation |
 |--------|----------------|
+| Python Set | Hash Table | 
 | Graph | Adjacency list (`list[set]`) |
 | Owned edges \(O_u\) | `list[set]` |
 | Matching | `mate[]` array |
@@ -77,7 +78,7 @@ pip install networkx matplotlib
 
 Run the python code by
 ```bash
-python dynamic_matching.py
+python3 dynamic_matching.py
 ```
 
 Input format
@@ -87,7 +88,7 @@ n q
 <operation u v>
 ```
 
-where n is the number of nodes in our graph and q denotes the number of updates. Replace operation with 'add' or 'delete' to add or delete an edge, respectively. 
+where n is the number of nodes in our graph, and q denotes the number of updates. Replace operation with 'add' or 'del' to add or delete an edge, respectively. 
 
 ## 🗂️ Input Files
 You can use the following input files instead of manually adding test cases.
