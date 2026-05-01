@@ -47,7 +47,7 @@ The algorithm maintains:
 
 | Concept | Implementation |
 |--------|----------------|
-| Python Set | Hash Table | 
+| Hash Table | Set | 
 | Graph | Adjacency list (`list[set]`) |
 | Owned edges \(O_u\) | `list[set]` |
 | Matching | `mate[]` array |
